@@ -18,11 +18,7 @@
 package course;
 
 import com.mongodb.*;
-import sun.util.resources.LocaleData;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +51,7 @@ public class BlogPostDAO {
         // Return a list of DBObjects, each one a post from the posts collection
         DBCursor cursor = postsCollection.find(new BasicDBObject()).sort(new BasicDBObject("date", -1)).limit(limit);
         try {
-            posts= new ArrayList<DBObject>();
+            posts= new ArrayList<>();
             while(cursor.hasNext()) {
                 posts.add(cursor.next());
             }
@@ -95,6 +91,7 @@ public class BlogPostDAO {
         .append("comments", new ArrayList<String>())
         .append("date", new Date());
 
+        postsCollection.insert(post);
         return permalink;
     }
 

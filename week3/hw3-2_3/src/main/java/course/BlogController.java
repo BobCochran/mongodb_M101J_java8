@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static spark.Spark.*;
 
@@ -27,9 +30,13 @@ import static spark.Spark.*;
  */
 public class BlogController {
 
-    private final UserDAO userDAO;
-    private final SessionDAO sessionDAO;
-    private final BlogPostDAO blogPostDAO;
+    private UserDAO userDAO = null;
+    private SessionDAO sessionDAO = null ;
+    private BlogPostDAO blogPostDAO = null;
+
+    public BlogController() {
+
+    }
 
     public BlogController(String mongoURIString) throws UnknownHostException {
         final MongoClient mongoClient = new MongoClient(new MongoClientURI(mongoURIString));
@@ -286,7 +293,7 @@ public class BlogController {
                     // redisplay page with errors
                     System.out.println(username + " has logined ");
 
-                    Map<String, String> root = new HashMap();
+                    Map<String, String> root = new HashMap<>();
                     root.put("errors", "post must contain a title and blog entry.");
                     root.put("subject", title);
                     root.put("username", username);
@@ -295,7 +302,7 @@ public class BlogController {
                     return new FreeMarkerEngine().render(new ModelAndView(root, "newpost_template.ftl"));
                 } else {
                     // extract tags
-                    ArrayList<String> tagsArray = extractTags(tags);
+                    List<String> tagsArray = extractTags(tags);
 
                     // substitute some <p> for the paragraph breaks
                     post = post.replaceAll("\\r?\\n", "<p>");
@@ -424,13 +431,14 @@ public class BlogController {
 
 
     // tags the tags string and put it into an array
-    private ArrayList<String> extractTags(String tags) {
+    public List<String> extractTags(String tags) {
+
 
         // probably more efficent ways to do this.
         //
         // whitespace = re.compile('\s')
 
-        tags = tags.replaceAll("\\s", "");
+        /*tags = tags.replaceAll("\\s", "");
         String[] tagArray = tags.split(",");
 
         // let's clean it up, removing the empty string and removing dups
@@ -442,8 +450,19 @@ public class BlogController {
             }
         }
 
-        return cleaned;
+        return cleaned;*/
+
+        final String TAGS_PATTERN = "\\s*(\\w+)\\s*,*";
+        Pattern pattern = Pattern.compile(TAGS_PATTERN);
+
+        List<String> match_tags = new ArrayList<>();
+
+        Matcher matcher = pattern.matcher(tags);
+
+        while ( matcher.find() ) {
+            match_tags.add(matcher.group(1));
+        }
+
+        return match_tags.stream().distinct().collect(Collectors.toList());
     }
-
-
 }

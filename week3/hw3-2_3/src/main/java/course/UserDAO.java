@@ -18,12 +18,12 @@
 package course;
 
 import com.mongodb.*;
-import sun.misc.BASE64Encoder;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Random;
 
 public class UserDAO {
@@ -82,7 +82,7 @@ public class UserDAO {
         String salt = hashedAndSalted.split(",")[1];
 
         if (!hashedAndSalted.equals(makePasswordHash(password, salt))) {
-            System.out.println("Submitted password is not a match");
+            System.out.println("Submitted password is not a match " + makePasswordHash(password, salt));
             return null;
         }
 
@@ -95,9 +95,9 @@ public class UserDAO {
             String saltedAndHashed = password + "," + salt;
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(saltedAndHashed.getBytes());
-            BASE64Encoder encoder = new BASE64Encoder();
+            Base64.Encoder encoder = Base64.getEncoder();
             byte hashedBytes[] = (new String(digest.digest(), "UTF-8")).getBytes();
-            return encoder.encode(hashedBytes) + "," + salt;
+            return encoder.encodeToString(hashedBytes) + "," + salt;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("MD5 is not available", e);
         } catch (UnsupportedEncodingException e) {
