@@ -2,7 +2,7 @@ mongodb_M101J_java8
 ===================
 
 The Java program content of MongoDB University course M101J, "MongoDB for Java Developers", is presented here 
-with code updated to utilize the Spark 2.0.0 web server, the Freemarker template engine, and the Lamda expressions
+with code updated to utilize the Spark 2.0.0 web server, the Freemarker template engine, and the Lambda expressions
 capability of Java 8.
 
 Course content is presented as Gradle projects. In the actual course, Maven is used as the build tool instead of
