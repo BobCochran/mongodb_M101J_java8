@@ -23,6 +23,10 @@ If you are on OS X 10.10, Start IntelliJ from a terminal window so that it can a
 Follow the normal procedure for importing a project. For example, navigate to the "week4" directory and IntelliJ
 will automatically detect the build.gradle file. Note that IntelliJ does not seem to recognize the 
 GRADLE_HOME environment variable. It will expect you to point it to the root directory where Gradle's binary 
-files are kept.
+files are kept. 
+
+#### Project Contributors ####
+
+Robert L. Cochran, r2cochran2@gmail.com
 
 
