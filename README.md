@@ -33,7 +33,7 @@ files are kept.
 
 #### Project Contributors ####
 
-Ted Chen, creator of repository
+Ted Chen, creator of repository  
 Robert L. Cochran provided documentation updates. <r2cochran2@gmail.com>
 
 
